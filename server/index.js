@@ -1,4 +1,7 @@
 const express = require('express');
+const httpServer = require( 'http');
+const url = require( 'url');
+const WebSocket = require( 'ws');
 const bodyParser = require('body-parser');
 const passport = require( 'passport');
 require( 'dotenv').config();
@@ -35,6 +38,22 @@ const apiRoutes = require('./routes/api');
 app.use('/auth', authRoutes);
 app.use('/api', apiRoutes);
 
-app.listen(app.get('port'), () => {
-  console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
+const server = httpServer.createServer( app);
+const ws = new WebSocket.Server({server});
+ws.on( 'connection', (sock, req) => {
+  const location = url.parse( req.url, true);
+
+  sock.on( 'message', ( message) => {
+    console.log( "received [%s]", message);
+    sock.send( `echo message[${message}]`);
+  });
+  sock.send( 'sock connected');
+});
+
+// app.listen(app.get('port'), () => {
+//   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
+// });
+
+server.listen(8080, function listening() {
+  console.log('Listening on %d', server.address().port);
 });
