@@ -24,5 +24,5 @@ exports.add = ( sock, req) => {
   sock.on( 'close', () => {
     all.delete(sock);
   });
-  sock.send( JSON.stringify( { success: true, message: "connected"}));
+  sock.send( JSON.stringify( { action: "ack", message: "connected"}));
 };

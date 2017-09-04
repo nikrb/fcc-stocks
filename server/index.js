@@ -35,8 +35,10 @@ app.use('/api', authCheckMiddleware);
 
 const authRoutes = require('./routes/auth');
 const apiRoutes = require('./routes/api');
+const apoRoutes = require( './routes/apo');
 app.use('/auth', authRoutes);
 app.use('/api', apiRoutes);
+app.use( '/apo', apoRoutes);
 
 const server = httpServer.createServer( app);
 const ws = new WebSocket.Server({server});

@@ -1,4 +1,5 @@
 import React from 'react';
+import Actions from './Actions';
 
 export default class HomePage extends React.Component {
   state = {
@@ -13,7 +14,18 @@ export default class HomePage extends React.Component {
     this.ws.close();
   };
   onWsMessage = (e) => {
-   console.log( "received [%s]", e.data);
+   const msg = JSON.parse( e.data);
+   switch( msg.action){
+     case "add":
+      Actions.getStock( {code: this.state.message_text})
+      .then( (response) => {
+        console.log( "get stock response:", response);
+      });
+      break;
+     default:
+      console.log( "unhandled ws message:", msg);
+      break;
+   }
   };
   onMessageChanged = (e) => {
     this.setState( {message_text: e.target.value});

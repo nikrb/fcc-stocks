@@ -1,4 +1,9 @@
-
+function getStock( payload){
+  let q = `code=${payload.code}`;
+  return fetch( '/apo/stock?'+q)
+  .then( checkStatus)
+  .then( parseJSON);
+}
 function postSignup( payload){
   return fetch( '/auth/signup', {
     method: 'post',
@@ -54,5 +59,6 @@ function parseJSON(response) {
   return response.json();
 }
 
-const Actions = { postSignup, postLogin, postChangePassword};
+const Actions = { postSignup, postLogin, postChangePassword,
+                  getStock};
 export default Actions;
