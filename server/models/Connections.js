@@ -1,4 +1,5 @@
 const url = require( 'url');
+const Stock = require( 'mongoose').model( 'Stock');
 let all = new Set();
 exports.add = ( sock, req) => {
   all.add( sock);
@@ -12,8 +13,15 @@ exports.add = ( sock, req) => {
     // sock.send( `echo message[${message}]`);
     switch( msg.action){
       case 'add':
-        all.forEach( (s) => {
-          s.send( JSON.stringify({ action:"add", code:msg.code}));
+        Stock.findOne({code: msg.code}, (err, stock) => {
+          if( err){
+            console.error( `find stock [${msg.code}] failed:`, err);
+            sock.send( JSON.stringify( {action:"error", message:"stock not found"}));
+          } else {
+            all.forEach( (s) => {
+              s.send( JSON.stringify({ action:"add", stock}));
+            });
+          }
         });
         break;
       default:

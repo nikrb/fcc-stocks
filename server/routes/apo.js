@@ -5,7 +5,7 @@ const router = new express.Router();
 router.get('/stock', (req, res) => {
   const {code} = req.query;
   const q = process.env.q_query_url+"WIKI/"+
-    code+"/data.json?rows=3&api_key="+process.env.quandl_key;
+    code+"/data.json?rows=100&api_key="+process.env.quandl_key;
   console.log( "stock request:", q);
   fetch( q)
   .then((response) => {
