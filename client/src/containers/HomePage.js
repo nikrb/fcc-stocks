@@ -17,22 +17,26 @@ export default class HomePage extends React.Component {
     this.ws.close();
   };
   onWsMessage = (e) => {
-   const msg = JSON.parse( e.data);
-   console.log( "ws message:", msg);
-   switch( msg.action){
-     case "add":
-      Actions.getStock( {code: msg.stock.code})
-      .then( (response) => {
-        console.log( "get stock response:", response);
-        const stock_data = [...this.state.stock_data, response.data];
-        const stocks = [...this.state.stocks, msg.stock];
-        this.setState( {stock_data, stocks});
-      });
+    const msg = JSON.parse( e.data);
+    console.log( "ws message:", msg);
+    switch( msg.action){
+      case "add":
+        if( msg.stock){
+          Actions.getStock( {code: msg.stock.code})
+          .then( (response) => {
+            console.log( "get stock response:", response);
+            const stock_data = [...this.state.stock_data, response.data];
+            const stocks = [...this.state.stocks, msg.stock];
+            this.setState( {stock_data, stocks});
+          });
+        } else {
+          console.log( "stock not found:", msg);
+        }
       break;
      default:
       console.log( "unhandled ws message:", msg);
       break;
-   }
+    }
   };
   onMessageChanged = (e) => {
     this.setState( {stock_text: e.target.value.toUpperCase()});
@@ -58,12 +62,12 @@ export default class HomePage extends React.Component {
     return (
       <div className="App">
         <h1>Stocks</h1>
+        <div>
+          {stock_cards}
+        </div>
         <div style={search_style}>
           <input type="text" onChange={this.onMessageChanged} value={this.state.stock_text}/>
           <button type="button" onClick={this.onSendClicked}>Send</button>
-        </div>
-        <div>
-          {stock_cards}
         </div>
       </div>
     );
