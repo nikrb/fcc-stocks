@@ -1,5 +1,6 @@
 function getStock( payload){
-  let q = `code=${payload.code}`;
+  let q = "";
+  Object.keys( payload).forEach( k => q += `${k}=${payload[k]}`);
   return fetch( '/apo/stock?'+q)
   .then( checkStatus)
   .then( parseJSON);
