@@ -10,4 +10,6 @@ module.exports.connect = (uri) => {
   });
 
   require( './user');
+  require( './stock');
+  require( './price');
 };

@@ -45,9 +45,10 @@ ws.on( 'connection', (sock, req) => {
 
   sock.on( 'message', ( message) => {
     console.log( "received [%s]", message);
+
     sock.send( `echo message[${message}]`);
   });
-  sock.send( 'sock connected');
+  sock.send( JSON.)stringify( { success: true, message: "connected", req});
 });
 
 // app.listen(app.get('port'), () => {
