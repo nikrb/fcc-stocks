@@ -19,7 +19,8 @@ export default class HomePage extends React.Component {
     this.setState( {message_text: e.target.value});
   };
   onSendClicked = (e) => {
-    this.ws.send( this.state.message_text);
+    const msg = { action: "add", code: this.state.message_text};
+    this.ws.send( JSON.stringify( msg));
   };
   render = () => {
     return (

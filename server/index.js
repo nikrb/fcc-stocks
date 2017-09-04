@@ -1,12 +1,12 @@
 const express = require('express');
 const httpServer = require( 'http');
-const url = require( 'url');
 const WebSocket = require( 'ws');
 const bodyParser = require('body-parser');
 const passport = require( 'passport');
 require( 'dotenv').config();
 require( './models').connect( process.env.dbUri);
 const app = express();
+const connections = require( './models/Connections');
 
 // cloud9 requires port 8080
 // react-scripts start dev server on 3000 so we can have the backend api at 8080
@@ -41,19 +41,8 @@ app.use('/api', apiRoutes);
 const server = httpServer.createServer( app);
 const ws = new WebSocket.Server({server});
 ws.on( 'connection', (sock, req) => {
-  const location = url.parse( req.url, true);
-
-  sock.on( 'message', ( message) => {
-    console.log( "received [%s]", message);
-
-    sock.send( `echo message[${message}]`);
-  });
-  sock.send( JSON.)stringify( { success: true, message: "connected", req});
+  connections.add( sock, req);
 });
-
-// app.listen(app.get('port'), () => {
-//   console.log(`Find the server at: http://localhost:${app.get('port')}/`); // eslint-disable-line no-console
-// });
 
 server.listen(8080, function listening() {
   console.log('Listening on %d', server.address().port);
