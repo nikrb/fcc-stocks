@@ -19,8 +19,14 @@ export default class HomePage extends React.Component {
   };
   onWsMessage = (e) => {
     const msg = JSON.parse( e.data);
-    // console.log( "ws message:", msg);
+    console.log( "ws message:", msg);
     switch( msg.action){
+      case "ack":
+        if( msg.message === "connected"){
+          console.log( "requesting stock list");
+          this.ws.send( JSON.stringify( { action: "show"}));
+        }
+        break;
       case "add":
         if( msg.stock){
           Actions.getStock( {code: msg.stock.code})
@@ -66,7 +72,7 @@ export default class HomePage extends React.Component {
     this.ws.send( JSON.stringify( msg));
   };
   render = () => {
-    const width = 800, height = 600;
+    const width = 800, height = 400;
     const margin = { top: 20, left: 40, bottom:20, right:20};
     const stock_cards = this.state.stocks.map( (s,i) => {
       return (
@@ -82,7 +88,6 @@ export default class HomePage extends React.Component {
       .map( (k) => {
         return this.state.stock_data[k];
       });
-    console.log( "render stock data:", stock_data)
     return (
       <div className="App">
         <h1>Stocks</h1>
