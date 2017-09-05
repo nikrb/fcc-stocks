@@ -6,7 +6,7 @@ import StockCard from '../components/StockCard';
 export default class HomePage extends React.Component {
   state = {
     stock_text: "",
-    stock_data: [],
+    stock_data: {},
     stocks: []
   };
   componentWillMount = () => {
@@ -19,24 +19,38 @@ export default class HomePage extends React.Component {
   };
   onWsMessage = (e) => {
     const msg = JSON.parse( e.data);
-    console.log( "ws message:", msg);
+    // console.log( "ws message:", msg);
     switch( msg.action){
       case "add":
         if( msg.stock){
           Actions.getStock( {code: msg.stock.code})
           .then( (response) => {
-            const stock_data = [...this.state.stock_data, response.data];
+            const stock_data = {...this.state.stock_data}
+            stock_data[msg.stock.code] = response.data;
             const stocks = [...this.state.stocks, msg.stock];
-            console.log( "get stock new data list:", stock_data);
             this.setState( {stock_data, stocks});
           });
         } else {
-          console.log( "stock not found:", msg);
+          console.error( "stock not found:", msg);
         }
-      break;
-     default:
-      console.log( "unhandled ws message:", msg);
-      break;
+        break;
+      case "remove":
+        if( msg.code){
+          const stock_data = {...this.state.stock_data};
+          if( stock_data[msg.code]){
+            delete stock_data[msg.code];
+          }
+          const stocks = this.state.stocks.filter( (d) => {
+            return d.code !== msg.code;
+          });
+          this.setState( { stock_data, stocks});
+        } else {
+          console.err( "stock not found:", msg);
+        }
+        break;
+      default:
+        console.log( "unhandled ws message:", msg);
+        break;
     }
   };
   onMessageChanged = (e) => {
@@ -48,10 +62,12 @@ export default class HomePage extends React.Component {
   };
   onRemoveStock = ( code) => {
     console.log( `remove stock [${code}]`);
+    const msg = { action: "remove", code};
+    this.ws.send( JSON.stringify( msg));
   };
   render = () => {
-    const width = 600, height = 400;
-    const margin = { top: 20, left: 20, bottom:20, right:20};
+    const width = 800, height = 600;
+    const margin = { top: 20, left: 40, bottom:20, right:20};
     const stock_cards = this.state.stocks.map( (s,i) => {
       return (
         <StockCard key={i} code={s.code} description={s.description}
@@ -62,11 +78,16 @@ export default class HomePage extends React.Component {
       display: "flex",
       flexDirection: "row"
     };
+    const stock_data = Object.keys( this.state.stock_data)
+      .map( (k) => {
+        return this.state.stock_data[k];
+      });
+    console.log( "render stock data:", stock_data)
     return (
       <div className="App">
         <h1>Stocks</h1>
         <div>
-          <LineChart data={this.state.stock_data} margin={margin}
+          <LineChart data={stock_data} margin={margin}
             width={width} height={height} />
         </div>
         <div>

@@ -24,6 +24,11 @@ exports.add = ( sock, req) => {
           }
         });
         break;
+      case 'remove':
+        all.forEach( (s) => {
+          s.send( JSON.stringify( {action:"remove", code: msg.code}));
+        });
+        break;
       default:
         console.error( "message action unrecognised:", msg);
         break;
