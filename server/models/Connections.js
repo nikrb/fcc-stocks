@@ -31,23 +31,32 @@ exports.add = ( sock, req) => {
             console.error( `find stock [${msg.code}] failed:`, err);
             sock.send( JSON.stringify( {action:"error", message:"stock not found"}));
           } else {
-            stock.is_displayed = true;
-            stock.save( function( err){
-              if( err) console.error( "stock save failed:", err);
-            });
-            all.forEach( (s) => {
-              s.send( JSON.stringify({ action:"add", stock}));
-            });
+            if( stock){
+              stock.is_displayed = true;
+              stock.save( function( err){
+                if( err) console.error( "stock save failed:", err);
+              });
+              all.forEach( (s) => {
+                s.send( JSON.stringify({ action:"add", stock}));
+              });
+            } else {
+              sock.send( JSON.stringify( {action:"error", message:"stock not found"}));
+            }
           }
         });
         break;
       case 'remove':
         Stock.findOne( {code:msg.code}, (err, stock) => {
-          stock.is_displayed = false;
-          stock.save();
-        });
-        all.forEach( (s) => {
-          s.send( JSON.stringify( {action:"remove", code: msg.code}));
+          if( err) console.error( "remove find stock failed:", err);
+          if( stock){
+            stock.is_displayed = false;
+            stock.save();
+            all.forEach( (s) => {
+              s.send( JSON.stringify( {action:"remove", code: msg.code}));
+            });
+          } else {
+            sock.send( JSON.stringify( {action:"error", message: "stock not found"}));
+          }
         });
         break;
       default:
