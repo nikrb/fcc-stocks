@@ -54,6 +54,12 @@ export default class HomePage extends React.Component {
           console.err( "stock not found:", msg);
         }
         break;
+      case "error":
+        if( msg.message){
+          // TODO: ui feedback
+          alert( msg.message);
+        }
+        break;
       default:
         console.log( "unhandled ws message:", msg);
         break;
