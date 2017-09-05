@@ -5,7 +5,8 @@ const StockSchema = new mongoose.Schema({
     type: String,
     index: { unique: true}
   },
-  description: String
+  description: String,
+  is_displayed: Boolean
 });
 
 module.exports = mongoose.model('Stock', StockSchema);
