@@ -1,5 +1,6 @@
 import React from 'react';
 import Actions from './Actions';
+import {LineChart} from '../components/charts';
 import StockCard from '../components/StockCard';
 
 export default class HomePage extends React.Component {
@@ -24,9 +25,9 @@ export default class HomePage extends React.Component {
         if( msg.stock){
           Actions.getStock( {code: msg.stock.code})
           .then( (response) => {
-            console.log( "get stock response:", response);
             const stock_data = [...this.state.stock_data, response.data];
             const stocks = [...this.state.stocks, msg.stock];
+            console.log( "get stock new data list:", stock_data);
             this.setState( {stock_data, stocks});
           });
         } else {
@@ -49,6 +50,8 @@ export default class HomePage extends React.Component {
     console.log( `remove stock [${code}]`);
   };
   render = () => {
+    const width = 600, height = 400;
+    const margin = { top: 20, left: 20, bottom:20, right:20};
     const stock_cards = this.state.stocks.map( (s,i) => {
       return (
         <StockCard key={i} code={s.code} description={s.description}
@@ -62,6 +65,10 @@ export default class HomePage extends React.Component {
     return (
       <div className="App">
         <h1>Stocks</h1>
+        <div>
+          <LineChart data={this.state.stock_data} margin={margin}
+            width={width} height={height} />
+        </div>
         <div>
           {stock_cards}
         </div>
