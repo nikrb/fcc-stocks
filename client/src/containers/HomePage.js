@@ -2,6 +2,7 @@ import React from 'react';
 import Actions from './Actions';
 import {LineChart} from '../components/charts';
 import StockCard from '../components/StockCard';
+import Loader from '../images/loader.gif';
 
 export default class HomePage extends React.Component {
   state = {
@@ -97,9 +98,11 @@ export default class HomePage extends React.Component {
     return (
       <div className="App">
         <h1>Stocks</h1>
-        <div>
-          <LineChart data={stock_data} margin={margin}
-            width={width} height={height} />
+        <div>{Object.keys( this.state.stock_data).length?
+            <LineChart data={stock_data} margin={margin}
+              width={width} height={height} />
+            : <p><img src={Loader} alt="Please wait ...." /></p>
+          }
         </div>
         <div>
           {stock_cards}
