@@ -9,9 +9,10 @@ export default class StockCard extends React.Component {
     const card = {
       display:"flex",
       flexDirection: "row",
+      flexBasis: "24%",
       flexShrink: "1",
       border: "none",
-      borderLeft: `3px solid ${colour}`
+      borderLeft: `3px solid ${colour}`,
     };
     const desc_style = {
       margin: "10px",
