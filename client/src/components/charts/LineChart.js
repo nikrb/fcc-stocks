@@ -10,7 +10,7 @@ export default class LineChart extends React.Component {
     height: PropTypes.number.isRequired,
     margin: PropTypes.object.isRequired,
     data: PropTypes.array.isRequired,
-    colour: PropTypes.string.isRequired
+    cScale: PropTypes.func.isRequired
   };
   render = () => {
     const {width,height,margin,cScale} = this.props;
