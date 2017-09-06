@@ -88,8 +88,9 @@ export default class HomePage extends React.Component {
           width={width} height={height}
           onRemoveStock={this.onRemoveStock} />
         <div style={search_style}>
-          <input type="text" onChange={this.onMessageChanged} value={this.state.stock_text}/>
-          <button type="button" onClick={this.onSendClicked}>Send</button>
+          <input type="text" onChange={this.onMessageChanged}
+            placeholder="Stock code" value={this.state.stock_text}/>
+          <button type="button" onClick={this.onSendClicked}>Add</button>
         </div>
       </div>
     );
