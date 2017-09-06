@@ -77,6 +77,7 @@ export default class HomePage extends React.Component {
     const width = 800, height = 400;
     const margin = { top: 20, left: 40, bottom:20, right:20};
     const search_style = {
+      margin: "10px",
       display: "flex",
       flexDirection: "row"
     };
