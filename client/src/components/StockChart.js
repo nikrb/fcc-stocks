@@ -21,6 +21,7 @@ export default class StockChart extends React.Component {
     const stock_card_wrapper = {
       display: "flex",
       flexDirection: "row",
+      justifyContent: "center",
       flexWrap: "wrap"
     };
     const wrapper = {
