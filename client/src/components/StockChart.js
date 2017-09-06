@@ -1,13 +1,14 @@
 import React from 'react';
 import {LineChart} from './charts';
 import StockCard from './StockCard';
+import {Legend} from './charts';
 import Loader from '../images/loader.gif';
 import * as d3 from 'd3';
 
 export default class StockChart extends React.Component {
   render = () => {
     const {stocks, margin, width, height} = this.props;
-    const cScale = d3.scaleOrdinal(d3.schemeCategory20);
+    const cScale = d3.scaleOrdinal(d3.schemeCategory10);
     const stock_cards = stocks.map( (s,i) => {
       return (
         <StockCard key={i} code={s.code} description={s.description}
@@ -19,7 +20,8 @@ export default class StockChart extends React.Component {
     });
     const stock_card_wrapper = {
       display: "flex",
-      flexDirection: "row"
+      flexDirection: "row",
+      flexWrap: "wrap"
     };
     const wrapper = {
       display: "flex",
@@ -33,6 +35,9 @@ export default class StockChart extends React.Component {
               width={width} height={height} cScale={cScale} />
             : <p><img src={Loader} alt="Please wait ...." /></p>
         }
+        </div>
+        <div>
+          <Legend stocks={stocks} cScale={cScale} />
         </div>
         <div style={stock_card_wrapper}>
           {stock_cards}

@@ -1,3 +1,4 @@
 import LineChart from './LineChart';
+import Legend from './Legend';
 
-export {LineChart};
+export {LineChart,Legend};
