@@ -84,7 +84,7 @@ export default class HomePage extends React.Component {
     const stock_cards = this.state.stocks.map( (s,i) => {
       return (
         <StockCard key={i} code={s.code} description={s.description}
-          onDelete={this.onRemoveStock} />
+          onDelete={this.onRemoveStock} colour="red" />
       );
     });
     const search_style = {
@@ -95,6 +95,10 @@ export default class HomePage extends React.Component {
       .map( (k) => {
         return this.state.stock_data[k];
       });
+    const stock_card_wrapper = {
+      display: "flex",
+      flexDirection: "row"
+    };
     return (
       <div className="App">
         <h1>Stocks</h1>
@@ -104,7 +108,7 @@ export default class HomePage extends React.Component {
             : <p><img src={Loader} alt="Please wait ...." /></p>
           }
         </div>
-        <div>
+        <div style={stock_card_wrapper}>
           {stock_cards}
         </div>
         <div style={search_style}>

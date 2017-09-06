@@ -8,14 +8,22 @@ export default class StockCard extends React.Component {
     const {code, description} = this.props;
     const card = {
       display:"flex",
-      flexDirection: "row"
+      flexDirection: "row",
+      border: "none",
+      borderLeft: `3px solid ${this.props.colour}`
+    };
+    const desc_style = {
+      margin: "10px",
+      padding: "0",
+      fontSize: "0.8em",
+      fontStyle: "italic"
     };
     return (
       <div style={card}>
         <button type="button" onClick={this.onDelete} >X</button>
         <div>
           {code}
-          <p>{description}</p>
+          <div style={desc_style}>{description}</div>
         </div>
       </div>
     );
