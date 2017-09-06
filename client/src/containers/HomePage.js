@@ -7,7 +7,6 @@ import Loader from '../images/loader.gif';
 export default class HomePage extends React.Component {
   state = {
     stock_text: "",
-    stock_data: {},
     stocks: []
   };
   componentWillMount = () => {
@@ -32,10 +31,11 @@ export default class HomePage extends React.Component {
         if( msg.stock){
           Actions.getStock( {code: msg.stock.code})
           .then( (response) => {
-            const stock_data = {...this.state.stock_data}
-            stock_data[msg.stock.code] = response.data;
-            const stocks = [...this.state.stocks, msg.stock];
-            this.setState( {stock_data, stocks});
+            const stocks = this.state.stocks.filter( (stock) => {
+              return stock.code !== msg.stock.code;
+            });
+            stocks.push( {...msg.stock, data: response.data});
+            this.setState( {stocks});
           });
         } else {
           console.error( "stock not found:", msg);
@@ -43,14 +43,10 @@ export default class HomePage extends React.Component {
         break;
       case "remove":
         if( msg.code){
-          const stock_data = {...this.state.stock_data};
-          if( stock_data[msg.code]){
-            delete stock_data[msg.code];
-          }
           const stocks = this.state.stocks.filter( (d) => {
             return d.code !== msg.code;
           });
-          this.setState( { stock_data, stocks});
+          this.setState( {stocks});
         } else {
           console.err( "stock not found:", msg);
         }
@@ -91,10 +87,9 @@ export default class HomePage extends React.Component {
       display: "flex",
       flexDirection: "row"
     };
-    const stock_data = Object.keys( this.state.stock_data)
-      .map( (k) => {
-        return this.state.stock_data[k];
-      });
+    const stock_data = this.state.stocks.map( (stock) => {
+      return [...stock.data];
+    });
     const stock_card_wrapper = {
       display: "flex",
       flexDirection: "row"
@@ -102,7 +97,7 @@ export default class HomePage extends React.Component {
     return (
       <div className="App">
         <h1>Stocks</h1>
-        <div>{Object.keys( this.state.stock_data).length?
+        <div>{stock_data.length?
             <LineChart data={stock_data} margin={margin}
               width={width} height={height} />
             : <p><img src={Loader} alt="Please wait ...." /></p>
