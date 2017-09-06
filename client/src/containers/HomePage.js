@@ -1,14 +1,13 @@
 import React from 'react';
 import Actions from './Actions';
-import {LineChart} from '../components/charts';
-import StockCard from '../components/StockCard';
-import Loader from '../images/loader.gif';
+import StockChart from '../components/StockChart';
 
 export default class HomePage extends React.Component {
   state = {
     stock_text: "",
     stocks: []
   };
+
   componentWillMount = () => {
     this.ws = new WebSocket( 'ws://localhost:8080');
     this.ws.addEventListener( 'message', this.onWsMessage);
@@ -77,35 +76,16 @@ export default class HomePage extends React.Component {
   render = () => {
     const width = 800, height = 400;
     const margin = { top: 20, left: 40, bottom:20, right:20};
-    const stock_cards = this.state.stocks.map( (s,i) => {
-      return (
-        <StockCard key={i} code={s.code} description={s.description}
-          onDelete={this.onRemoveStock} colour="red" />
-      );
-    });
     const search_style = {
-      display: "flex",
-      flexDirection: "row"
-    };
-    const stock_data = this.state.stocks.map( (stock) => {
-      return [...stock.data];
-    });
-    const stock_card_wrapper = {
       display: "flex",
       flexDirection: "row"
     };
     return (
       <div className="App">
         <h1>Stocks</h1>
-        <div>{stock_data.length?
-            <LineChart data={stock_data} margin={margin}
-              width={width} height={height} />
-            : <p><img src={Loader} alt="Please wait ...." /></p>
-          }
-        </div>
-        <div style={stock_card_wrapper}>
-          {stock_cards}
-        </div>
+        <StockChart stocks={this.state.stocks} margin={margin}
+          width={width} height={height}
+          onRemoveStock={this.onRemoveStock} />
         <div style={search_style}>
           <input type="text" onChange={this.onMessageChanged} value={this.state.stock_text}/>
           <button type="button" onClick={this.onSendClicked}>Send</button>
