@@ -9,10 +9,11 @@ export default class LineChart extends React.Component {
     width: PropTypes.number.isRequired,
     height: PropTypes.number.isRequired,
     margin: PropTypes.object.isRequired,
-    data: PropTypes.array.isRequired
+    data: PropTypes.array.isRequired,
+    colour: PropTypes.string.isRequired
   };
   render = () => {
-    const {width,height,margin} = this.props;
+    const {width,height,margin,cScale} = this.props;
     const inner_width = width-margin.left-margin.right;
     const inner_height = height - margin.top - margin.bottom;
     const transform = `translate( ${margin.left}, ${margin.top})`;
@@ -26,7 +27,6 @@ export default class LineChart extends React.Component {
     // set the ranges
     const xScale = d3.scaleTime().range([0, inner_width]);
     const yScale = d3.scaleLinear().range([inner_height, 0]);
-    const cScale = d3.scaleOrdinal(d3.schemeCategory20);
 
     // flatten the array of lines to find boundary values
     const fd = data.concatAll();

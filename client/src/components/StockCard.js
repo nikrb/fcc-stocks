@@ -5,12 +5,13 @@ export default class StockCard extends React.Component {
     this.props.onDelete( this.props.code);
   };
   render = () => {
-    const {code, description} = this.props;
+    const {code, description,colour} = this.props;
     const card = {
       display:"flex",
       flexDirection: "row",
+      flexShrink: "1",
       border: "none",
-      borderLeft: `3px solid ${this.props.colour}`
+      borderLeft: `3px solid ${colour}`
     };
     const desc_style = {
       margin: "10px",

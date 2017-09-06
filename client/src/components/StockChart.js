@@ -2,14 +2,16 @@ import React from 'react';
 import {LineChart} from './charts';
 import StockCard from './StockCard';
 import Loader from '../images/loader.gif';
+import * as d3 from 'd3';
 
 export default class StockChart extends React.Component {
   render = () => {
     const {stocks, margin, width, height} = this.props;
+    const cScale = d3.scaleOrdinal(d3.schemeCategory20);
     const stock_cards = stocks.map( (s,i) => {
       return (
         <StockCard key={i} code={s.code} description={s.description}
-          onDelete={this.props.onRemoveStock} colour="red" />
+          onDelete={this.props.onRemoveStock} colour={cScale(i)} />
       );
     });
     const stock_data = this.props.stocks.map( (stock) => {
@@ -19,11 +21,16 @@ export default class StockChart extends React.Component {
       display: "flex",
       flexDirection: "row"
     };
+    const wrapper = {
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center"
+    };
     return (
-      <div>
+      <div style={wrapper}>
         <div>{stock_data.length?
             <LineChart data={stock_data} margin={margin}
-              width={width} height={height} />
+              width={width} height={height} cScale={cScale} />
             : <p><img src={Loader} alt="Please wait ...." /></p>
         }
         </div>
