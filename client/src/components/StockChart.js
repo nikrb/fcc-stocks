@@ -28,7 +28,7 @@ export default class StockChart extends React.Component {
     this.setState( { tooltip_visible: false, tooltip_ndx: -1});
   };
   render = () => {
-    const {stocks, margin, width, height} = this.props;
+    const {stocks, margin, width, height,is_loading} = this.props;
     const cScale = d3.scaleOrdinal(d3.schemeCategory10);
     const stock_cards = stocks.map( (s,i) => {
       return (
@@ -57,13 +57,13 @@ export default class StockChart extends React.Component {
     };
     return (
       <div style={wrapper}>
-        <div>{stock_data.length?
-            <LineChart data={stock_data} margin={margin}
+        <div>{is_loading?
+          <p><img src={Loader} alt="Please wait ...." /></p>
+          :<LineChart data={stock_data} margin={margin}
               width={width} height={height} cScale={cScale}
               onTargetRectEnter={this.onTooltipTargetEnter}
               onTargetRectLeave={this.onTooltipTargetLeave}
               highlight_ndx={this.state.tooltip_ndx}/>
-            : <p><img src={Loader} alt="Please wait ...." /></p>
         }
         </div>
         <div>

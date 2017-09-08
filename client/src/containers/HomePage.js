@@ -7,6 +7,7 @@ import {genLastWeekdays, normaliseDates, weekday} from '../components/charts';
 
 export default class HomePage extends React.Component {
   state = {
+    is_loading: true,
     weekdays100: genLastWeekdays( moment(), 100),
     stock_text: "",
     stocks: []
@@ -45,7 +46,7 @@ export default class HomePage extends React.Component {
                 weekday: weekday( parseTime( p.date)), close: +p.close};
             });
             stocks.push( {...msg.stock, data});
-            this.setState( {stocks});
+            this.setState( {stocks, is_loading: false});
           });
         } else {
           console.error( "stock not found:", msg);
@@ -64,7 +65,10 @@ export default class HomePage extends React.Component {
       case "error":
         if( msg.message){
           // TODO: ui feedback
-          alert( msg.message);
+          this.setState( {is_loading: false});
+          if( msg.message !== "no stocks displayed"){
+            alert( msg.message);
+          }
         }
         break;
       default:
@@ -98,9 +102,15 @@ export default class HomePage extends React.Component {
     return (
       <div className="App">
         <h1>Stocks</h1>
-        <StockChart stocks={this.state.stocks} margin={margin}
-          width={width} height={height}
-          onRemoveStock={this.onRemoveStock} />
+        {this.state.stocks.length || this.state.is_loading?
+          <StockChart stocks={this.state.stocks} margin={margin}
+            width={width} height={height}
+            onRemoveStock={this.onRemoveStock} is_loading={this.state.is_loading} />
+          : <div>
+            <p>There are no stocks dislayed currently</p>
+            <p>Enter a code below and click Add</p>
+          </div>
+        }
         <div style={search_style}>
           <input type="text" onChange={this.onMessageChanged}
             placeholder="Stock code" value={this.state.stock_text}

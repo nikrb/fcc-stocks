@@ -19,9 +19,13 @@ exports.add = ( sock, req) => {
             console.err( "find displayed stocks failed:", err);
             sock.send( JSON.stringify( {action: "show", error: "stocks not found"}));
           } else {
-            stocks.forEach( (stock) => {
-              sock.send( JSON.stringify( {action: "add", stock}));
-            });
+            if( stocks.length){
+              stocks.forEach( (stock) => {
+                sock.send( JSON.stringify( {action: "add", stock}));
+              });
+            } else {
+              sock.send( JSON.stringify( {action: "error", message:"no stocks displayed"}));
+            }
           }
         });
         break;
