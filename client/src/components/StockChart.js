@@ -14,25 +14,13 @@ export default class StockChart extends React.Component {
     tooltip_ndx : -1
   };
   onTooltipTargetEnter = (e, ndx) => {
-    const tip_data = this.props.stocks.map( (stock) => {
-      let ret = {};
-      if( stock.data[ndx]){
-        ret = { code: stock.code, date: stock.data[ndx].date, close: stock.data[ndx].close };
-      }
-      return ret;
-    });
-    let date = "";
-    const text = tip_data.reduce( (acc, c) => {
-      let ret = acc;
-      if( c.code){
-        date = c.date;
-        ret = acc.concat( c.code+" "+c.close);
-      }
-      return ret;
-    }, []);
-    this.setState( { tooltip_text: [date, ...text],
+    const tooltip_text = this.props.stocks.reduce( (acc, stock) => {
+      return acc.concat( stock.code+" "+stock.data[ndx].close);
+    }, [this.props.stocks[0].data[ndx].date]);
+
+    this.setState( { tooltip_text,
       tooltip_visible:true,
-      tooltip_pos: {x: e.clientX, y: e.clientY},
+      tooltip_pos: {x: e.pageX, y: e.pageY},
       tooltip_ndx: ndx
     });
   };
