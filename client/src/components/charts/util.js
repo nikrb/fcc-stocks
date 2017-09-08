@@ -11,10 +11,10 @@ export const genLastWeekdays = ( date, day_count) => {
   });
 };
 
-export const normaliseData = ( data, days) => {
+export const normaliseDates = ( data, days) => {
   const new_data = [];
   let data_ndx = 0;
-  let last_close = 0;
+  let last_close = data[0].close;
   days.forEach( (d,i) => {
     if( data_ndx >= data.length){
       new_data.push( { date: d.format( 'YYYY-MM-DD'), close: last_close});
