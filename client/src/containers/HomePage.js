@@ -1,13 +1,16 @@
 import React from 'react';
+import moment from 'moment';
 import Actions from './Actions';
 import StockChart from '../components/StockChart';
+import * as d3 from 'd3';
+import {genLastWeekdays, normaliseDates, weekday} from '../components/charts';
 
 export default class HomePage extends React.Component {
   state = {
+    weekdays100: genLastWeekdays( moment(), 100),
     stock_text: "",
     stocks: []
   };
-
   componentWillMount = () => {
     this.ws = new WebSocket( 'ws://localhost:8080');
     this.ws.addEventListener( 'message', this.onWsMessage);
@@ -16,6 +19,7 @@ export default class HomePage extends React.Component {
     this.ws.removeEventListener( 'message', this.onWsMessage);
     this.ws.close();
   };
+
   onWsMessage = (e) => {
     const msg = JSON.parse( e.data);
     console.log( "ws message:", msg);
@@ -33,7 +37,16 @@ export default class HomePage extends React.Component {
             const stocks = this.state.stocks.filter( (stock) => {
               return stock.code !== msg.stock.code;
             });
-            stocks.push( {...msg.stock, data: response.data});
+            const norm = normaliseDates( response.data, this.state.weekdays100);
+            // conver the dates to weekdays
+            const parseTime = d3.timeParse("%Y-%m-%d");
+            const data = norm.map( (p) => {
+              return { date: p.date,
+                weekday: weekday( parseTime( p.date)), close: +p.close};
+            });
+            console.log( "normalised data:", data);
+            stocks.push( {...msg.stock, data});
+            console.log( "new stocks:", stocks);
             this.setState( {stocks});
           });
         } else {
