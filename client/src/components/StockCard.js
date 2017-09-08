@@ -10,7 +10,7 @@ export default class StockCard extends React.Component {
       display:"flex",
       flexDirection: "row",
       flexBasis: "24%",
-      flexShrink: "1",
+      flexGrow: "1",
       border: "none",
       borderLeft: `3px solid ${colour}`,
     };
