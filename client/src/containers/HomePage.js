@@ -84,6 +84,9 @@ export default class HomePage extends React.Component {
     const msg = { action: "remove", code};
     this.ws.send( JSON.stringify( msg));
   };
+  onStockTextFocus = (e) => {
+    e.target.select();
+  };
   render = () => {
     const width = 800, height = 400;
     const margin = { top: 20, left: 40, bottom:20, right:20};
@@ -100,7 +103,8 @@ export default class HomePage extends React.Component {
           onRemoveStock={this.onRemoveStock} />
         <div style={search_style}>
           <input type="text" onChange={this.onMessageChanged}
-            placeholder="Stock code" value={this.state.stock_text}/>
+            placeholder="Stock code" value={this.state.stock_text}
+            onFocus={this.onStockTextFocus}/>
           <button type="button" onClick={this.onSendClicked}>Add</button>
         </div>
       </div>
