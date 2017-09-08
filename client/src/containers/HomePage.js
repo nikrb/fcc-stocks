@@ -44,9 +44,7 @@ export default class HomePage extends React.Component {
               return { date: p.date,
                 weekday: weekday( parseTime( p.date)), close: +p.close};
             });
-            console.log( "normalised data:", data);
             stocks.push( {...msg.stock, data});
-            console.log( "new stocks:", stocks);
             this.setState( {stocks});
           });
         } else {
