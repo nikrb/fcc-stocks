@@ -26,7 +26,7 @@ export default class StockChart extends React.Component {
       let ret = acc;
       if( c.code){
         date = c.date;
-        ret = acc.concat( c.date+":"+c.code+" "+c.close);
+        ret = acc.concat( c.code+" "+c.close);
       }
       return ret;
     }, []);
