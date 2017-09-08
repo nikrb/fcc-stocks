@@ -17,7 +17,6 @@ export const normaliseData = ( data, days) => {
   let last_close = 0;
   days.forEach( (d,i) => {
     if( data_ndx >= data.length){
-      console.log( "we ran out of data");
       new_data.push( { date: d.format( 'YYYY-MM-DD'), close: last_close});
     } else if( d.isSame( data[data_ndx].date, 'day')) {
       last_close = data[data_ndx].close;
@@ -27,19 +26,14 @@ export const normaliseData = ( data, days) => {
       new_data.push( {date: d.format( 'YYYY-MM-DD'), close:last_close});
     } else { // if( d.isBefore( data[data_ndx], 'day')){
       // we have a data value that isn't in our 100 day list
-      console.log( `days [${d.format('YYYY-MM-DD')}] is before data[${data[data_ndx].date}]`);
       while( d.isBefore( data[data_ndx].date, 'day') && data_ndx < data.length){
         data_ndx += 1;
       }
-      console.log( `now comparing data:`,data[data_ndx]);
       if( data[data_ndx]){
         if( d.isSame( data[data_ndx].date, 'day')){
-          console.log( "adding to new data");
           last_close = data[data_ndx].close;
           new_data.push( {date: d.format( 'YYYY-MM-DD'), close: last_close});
           data_ndx += 1;
-        } else {
-          console.log( "not the same");
         }
       }
     }
