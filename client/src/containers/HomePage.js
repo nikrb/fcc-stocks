@@ -13,7 +13,7 @@ export default class HomePage extends React.Component {
     stocks: []
   };
   componentWillMount = () => {
-    this.ws = new WebSocket( 'ws://localhost:8080');
+    this.ws = new WebSocket( 'ws://0.0.0.0:8080');
     this.ws.addEventListener( 'message', this.onWsMessage);
   };
   componentWillUnmount = () => {
