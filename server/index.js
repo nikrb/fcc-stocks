@@ -2,7 +2,9 @@ const express = require('express');
 const httpServer = require( 'http');
 const WebSocket = require( 'ws');
 const bodyParser = require('body-parser');
-require( 'dotenv').config();
+if( process.env.NODE_ENV !== 'production'){
+  require( 'dotenv').config();
+}
 require( './models').connect( process.env.dbUri);
 const app = express();
 const connections = require( './models/Connections');
