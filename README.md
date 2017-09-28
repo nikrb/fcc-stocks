@@ -1,4 +1,4 @@
-fcc project Chart the Stockmarket
+fcc project Chart the Stockmarket [demo](http://knik-fcc-stocks.herokuapp.com)
 
 # User Stories
 1. I can view a graph displaying the recent trend lines for each added stock.
