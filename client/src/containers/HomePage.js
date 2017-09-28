@@ -13,7 +13,7 @@ export default class HomePage extends React.Component {
     stocks: []
   };
   componentWillMount = () => {
-    let ws_url = 'ws://pure-retreat-50318.herokuapp.com/:5000';
+    let ws_url = 'ws://knik-fcc-stocks.herokuapp.com/:5000';
     if( process.env.NODE_ENV === 'development'){
       ws_url = "ws://localhost:5000";
     }
