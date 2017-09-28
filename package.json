@@ -1,11 +1,12 @@
 {
   "name": "stocks",
   "version": "0.0.1",
-  "private": true,
+  "engines": {
+    "node": "6.11.x"
+  },
   "dependencies": {
     "babel-cli": "6.14.0",
     "babel-core": "6.14.0",
-    "bcrypt": "^1.0.3",
     "body-parser": "^1.17.1",
     "d3": "^4.10.2",
     "dotenv": "^4.0.0",
@@ -25,8 +26,13 @@
     "client": "babel-node start-client.js",
     "lint": "eslint ."
   },
+  "cacheDirectories": [
+    "node_modules",
+    "client/node_modules"
+  ],
   "devDependencies": {
     "concurrently": "^3.1.0",
     "nodemon": "^1.11.0"
-  }
+  },
+  "license": "MIT"
 }
