@@ -13,16 +13,23 @@ export default class HomePage extends React.Component {
     stocks: []
   };
   componentWillMount = () => {
-    this.ws = new WebSocket( 'ws://0.0.0.0:8080');
-    this.ws.addEventListener( 'message', this.onWsMessage);
-  };
-  componentWillUnmount = () => {
-    this.ws.removeEventListener( 'message', this.onWsMessage);
-    this.ws.close();
+    let ws_url = 'ws://murmuring-springs-39820.herokuapp.com/:5000';
+    if( process.env.NODE_ENV === 'development'){
+      ws_url = "ws://localhost:5000";
+    }
+    this.ws = new WebSocket( ws_url);
+    this.ws.onopen = () => {
+      console.log( "socket is open");
+    };
+    this.ws.onmessage = (message) => {
+      console.log( "websocket message:", message);
+      const msg = JSON.parse( message.data);
+      this.onWsMessage( msg);
+    };
   };
 
-  onWsMessage = (e) => {
-    const msg = JSON.parse( e.data);
+  onWsMessage = (msg) => {
+    // const msg = JSON.parse( e.data);
     console.log( "ws message:", msg);
     switch( msg.action){
       case "ack":
