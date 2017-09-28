@@ -9,7 +9,7 @@ require( './models').connect( process.env.dbUri);
 const app = express();
 const connections = require( './models/Connections');
 
-app.set('port', (process.env.PORT || 5000));
+app.set('port', 5000);
 
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
