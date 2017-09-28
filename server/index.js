@@ -9,7 +9,9 @@ require( './models').connect( process.env.dbUri);
 const app = express();
 const connections = require( './models/Connections');
 
-app.set('port', 5000);
+const PORT = process.env.PORT || 5000;
+
+// app.set('port', 5000);
 
 // Express only serves static assets in production
 if (process.env.NODE_ENV === 'production') {
@@ -26,8 +28,9 @@ const apoRoutes = require( './routes/apo');
 app.use( '/apo', apoRoutes);
 
 const server = httpServer.createServer( app);
-server.listen(5000, function listening() {
-  console.log('Listening on %d', server.address().port);
+
+server.listen(PORT, function () {
+  console.log(`Listening on port [${PORT}]`);
 });
 
 const ws = new WebSocket.Server({server});
