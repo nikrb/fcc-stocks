@@ -8,7 +8,7 @@ import {genLastWeekdays, normaliseDates, weekday} from '../components/charts';
 export default class HomePage extends React.Component {
   state = {
     is_loading: true,
-    weekdays100: genLastWeekdays( moment(), 100),
+    weekdays100: genLastWeekdays( moment().subtract(135, 'days'), 100),
     stock_text: "",
     stocks: []
   };
