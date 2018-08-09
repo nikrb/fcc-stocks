@@ -1,10 +1,12 @@
-require( 'dotenv').config({path: '../.env'});
+require( 'dotenv').config(); // {path: '../.env'});
 require( '../server/models').connect( process.env.dbUri);
 const Stock = require( 'mongoose').model( 'Stock');
 
 const fs = require( 'fs');
 
-fs.readFile( './WIKI-datasets-codes.csv', 'utf8', (err,data) => {
+Stock.collection.drop();
+
+fs.readFile( './scripts/WIKI-datasets-codes.csv', 'utf8', (err,data) => {
   let err_count = 0;
   if( err){
     console.error( err);
