@@ -1,5 +1,5 @@
 import moment from 'moment';
-import {genLastWeekdays, normaliseData} from './util';
+import {genLastWeekdays, normaliseDates} from './util';
 
 it('gets five days', () => {
   const expected = ["2017-09-05", "2017-09-04", "2017-09-01", "2017-08-31", "2017-08-30"];
@@ -27,7 +27,7 @@ it( 'normalises data that is ok', () => {
   ];
   const dt = moment( "2017-09-05", 'YYYY-MM-DD');
   const days = genLastWeekdays( dt, 5);
-  const res = normaliseData( test, days);
+  const res = normaliseDates( test, days);
   expect( res).toEqual( expected);
 });
 it( 'normalises data missing a middle data point', () => {
@@ -47,7 +47,7 @@ it( 'normalises data missing a middle data point', () => {
   ];
   const dt = moment( "2017-09-05", 'YYYY-MM-DD');
   const days = genLastWeekdays( dt, 5);
-  const data = normaliseData( test, days);
+  const data = normaliseDates( test, days);
   expect( data).toEqual( expected);
 });
 it( 'normalises data missing an end data point', () => {
@@ -67,13 +67,13 @@ it( 'normalises data missing an end data point', () => {
   ];
   const dt = moment( "2017-09-05", 'YYYY-MM-DD');
   const days = genLastWeekdays( dt, 5);
-  const data = normaliseData( test, days);
+  const data = normaliseDates( test, days);
   expect( data).toEqual( expected);
 });
 it( 'normalises data missing a start data point', () => {
   const dates = ["2017-09-05", "2017-09-04", "2017-09-01", "2017-08-31", "2017-08-30"];
   const expected = [
-    { date:"2017-09-05", close: 0},
+    { date:"2017-09-05", close: 9},
     { date:"2017-09-04", close: 9},
     { date:"2017-09-01", close: 8},
     { date:"2017-08-31", close: 7},
@@ -87,7 +87,7 @@ it( 'normalises data missing a start data point', () => {
   ];
   const dt = moment( "2017-09-05", 'YYYY-MM-DD');
   const days = genLastWeekdays( dt, 5);
-  const data = normaliseData( test, days);
+  const data = normaliseDates( test, days);
   expect( data).toEqual( expected);
 });
 it( 'normalises data with an extra data point', () => {
@@ -109,7 +109,7 @@ it( 'normalises data with an extra data point', () => {
   ];
   const dt = moment( "2017-09-05", 'YYYY-MM-DD');
   const days = genLastWeekdays( dt, 5);
-  const data = normaliseData( test, days);
+  const data = normaliseDates( test, days);
   expect( data).toEqual( expected);
 });
 it( 'normalises data with an extra weekend of data point', () => {
@@ -132,6 +132,6 @@ it( 'normalises data with an extra weekend of data point', () => {
   ];
   const dt = moment( "2017-09-05", 'YYYY-MM-DD');
   const days = genLastWeekdays( dt, 5);
-  const data = normaliseData( test, days);
+  const data = normaliseDates( test, days);
   expect( data).toEqual( expected);
 });
