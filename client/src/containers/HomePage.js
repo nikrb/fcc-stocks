@@ -8,7 +8,6 @@ import {genLastWeekdays, normaliseDates, weekday} from '../components/charts';
 export default class HomePage extends React.Component {
   state = {
     is_loading: true,
-    weekdays100: genLastWeekdays( moment().subtract(135, 'days'), 100),
     stock_text: "",
     stocks: []
   };
@@ -45,8 +44,11 @@ export default class HomePage extends React.Component {
             const stocks = this.state.stocks.filter( (stock) => {
               return stock.code !== msg.stock.code;
             });
-            const norm = normaliseDates( response.data, this.state.weekdays100);
-            // conver the dates to weekdays
+            const { end_date } = response;
+            const weekdays100 =
+              genLastWeekdays( moment(end_date, 'YYYY-MM-DD'), 100);
+            const norm = normaliseDates( response.data, weekdays100);
+            // convert the dates to weekdays
             const parseTime = d3.timeParse("%Y-%m-%d");
             const data = norm.map( (p) => {
               return { date: p.date,

@@ -28,7 +28,11 @@ router.get('/stock', (req, res) => {
             const data = result.dataset_data.data.map( (d) => {
               return { date: d[0], close: d[4]};
             });
-            res.status(200).json( {action:"stock", data});
+            res.status(200).json( {
+              action:"stock",
+              end_date: result.dataset_data.end_date,
+              data,
+            });
           });
         });
       } else {
